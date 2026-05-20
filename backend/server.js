@@ -7,6 +7,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+});
+
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
@@ -16,6 +21,7 @@ const db = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10
 });
+
 
 // LOGIN
 app.post('/api/login', (req, res) => {
