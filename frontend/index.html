@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAROL | Cáritas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen" class="login-container">
+        <form id="login-form" class="login-card">
+            <h2 style="font-size: 2.5rem; letter-spacing: 2px;">FAROL</h2>
+            <p class="subtitle">Ferramenta de Acolhimento e Registro Operacional Local</p>
+            <div class="input-group">
+                <label>E-mail Institucional</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="input-group">
+                <label>Senha de Acesso</label>
+                <input type="password" id="senha" required>
+            </div>
+            <button type="submit">Entrar no Sistema</button>
+        </form>
+    </div>
+
+    <!-- APLICATIVO PRINCIPAL -->
+    <div id="app-screen" class="app-layout" style="display: none;">
+        <aside class="sidebar">
+            <div class="brand-area">
+                <h3>FAROL</h3>
+            </div>
+            <div class="profile-area">
+                <p id="user-name" class="profile-name">Nome</p>
+                <span id="user-role" class="profile-badge">Cargo</span>
+            </div>
+            <nav class="nav-links">
+                <button onclick="showScreen('dashboard')">📊 Indicadores</button>
+                <button onclick="showScreen('prontuarios'); carregarProntuarios();">📋 Prontuários</button>
+                <button onclick="showScreen('cadastro')">➕ Nova Ficha</button>
+            </nav>
+            <button class="btn-logout" onclick="logout()">🚪 Sair</button>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- DASHBOARD -->
+            <div id="view-dashboard" class="view-section">
+                <h2>Indicadores Paroquiais</h2>
+                <div class="metric-card">
+                    <h3>Famílias Cadastradas</h3>
+                    <p id="dash-total" class="metric-number">0</p>
+                </div>
+            </div>
+
+            <!-- PRONTUÁRIOS (LISTAGEM E EDIÇÃO) -->
+            <div id="view-prontuarios" class="view-section" style="display: none;">
+                <h2>Prontuários Ativos</h2>
+
+                <input type="text" id="filtro-nome" placeholder="Buscar por nome ou CPF..." onkeyup="filtrarTabela()"
+                    style="padding: 10px; width: 100%; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px;">
+
+                <div class="table-responsive">
+                    <table class="custom-table" id="tabela-assistidos">
+                        <thead>
+                            <tr>
+                                <th>Nome Completo</th>
+                                <th>Bairro</th>
+                                <th>Telefone</th>
+                                <th>Demanda Atual</th>
+                                <th>Observações Sociais</th>
+                                <th class="col-psico">Psicologia (Sigilo)</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-assistidos">
+                            <!-- JS preenche aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CADASTRO -->
+            <div id="view-cadastro" class="view-section" style="display: none;">
+                <h2>Nova Ficha de Triagem</h2>
+                <form id="cadastro-form" class="form-box">
+                    <div class="form-row">
+                        <div class="form-control full-width">
+                            <label>Nome Completo *</label>
+                            <input type="text" id="cad-nome" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="form-control">
+                            <label>CPF</label>
+                            <input type="text" id="cad-cpf" maxlength="14" placeholder="000.000.000-00"
+                                oninput="this.value = this.value.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')">
+                        </div>
+                        <div class="form-control">
+                            <label>Telefone</label>
+                            <input type="text" id="cad-telefone" placeholder="(00) 00000-0000"
+                                oninput="this.value = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d)(\d{4})$/, '$1-$2')">
+                        </div>
+                        <div class="form-control">
+                            <label>Bairro</label>
+                            <input type="text" id="cad-bairro">
+                        </div>
+                    </div>
+
+                    <div class="form-control full-width">
+                        <label>Necessidade Principal *</label>
+                        <select id="cad-necessidade" required>
+                            <option value="">Selecione...</option>
+                            <option value="Cesta Básica">Cesta Básica</option>
+                            <option value="Medicamentos">Medicamentos</option>
+                            <option value="Documentação">Documentação</option>
+                            <option value="Acompanhamento Social">Acompanhamento Social</option>
+                            <option value="Ajuda de Custo">Ajuda de Custo</option>
+                        </select>
+                    </div>
+                    <div class="form-control full-width">
+                        <label>Parecer Social</label>
+                        <textarea id="cad-social" rows="3"></textarea>
+                    </div>
+                    <div class="form-control full-width core-secret col-psico">
+                        <label>Anotações Clínicas (Sigilo)</label>
+                        <textarea id="cad-psico" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">💾 Salvar Ficha</button>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
